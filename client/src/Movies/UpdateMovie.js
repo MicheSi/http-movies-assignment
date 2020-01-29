@@ -28,14 +28,19 @@ const UpdateMovie = props => {
         if (e.target.name === 'metascore') {
             value = parseInt(value, 10);
         }
+
+        // if (e.target.name === 'stars') {
+        //     setMovie({
+        //         ...movie,
+        //         [e.target.name]: value.split(",")
+        //     })
+        // }
     
         setMovie({
             ...movie,
             [e.target.name]: value
         });
     }
-
-    
     
     const handleSubmit = e => {
         e.preventDefault();
@@ -78,7 +83,7 @@ const UpdateMovie = props => {
                  type='textarea'
                  name='stars'
                  placeholder='Stars'
-                 onChange={starsChangeHandler}
+                 onChange={changeHandler}
                  value={movie.stars}
                 />
                 <button className='updateBtn'>Update Movie</button>
