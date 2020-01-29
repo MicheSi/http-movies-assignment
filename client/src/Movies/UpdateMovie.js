@@ -3,43 +3,51 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const initialMovie = {
-    id: Date.now(),
     title: '',
     director: '',
     metascore: '',
     stars: []
 }
 
-useEffect(() => {
-    console.log(props.movies)
-}, [])
-
-const changeHandler = e => {
-    let value = e.target.value;
-    if (e.target.name === 'metascore') {
-        value = parseInt(value, 10);
-    }
-
-    setMovie({
-        ...movie,
-        [e.target.name]: value
-    });
-}
-
-const handleSubmit = e => {
-    e.preventDefault();
-    axios
-    .put(`http://localhost:5000/movies/${id}`, movie)
-    .then(res => {
-        console.log(res)
-    })
-    .catch(err => console.log(err))
-}
-
-
 const UpdateMovie = props => {
     const [movie, setMovie] = useState(initialMovie);
     const {id} = useParams();
+
+    useEffect(() => {
+        console.log(props.movies)
+        const movieToUpdate = props.movies.find(movie => `${movie.id}` === id);
+        console.log(movieToUpdate);
+
+        if (movieToUpdate) {
+            setMovie(movieToUpdate);
+        }
+    }, [props.movies, id])
+    
+    const changeHandler = e => {
+        let value = e.target.value;
+        if (e.target.name === 'metascore') {
+            value = parseInt(value, 10);
+        }
+    
+        setMovie({
+            ...movie,
+            [e.target.name]: value
+        });
+    }
+
+    
+    
+    const handleSubmit = e => {
+        e.preventDefault();
+        axios
+        .put(`http://localhost:5000/api/movies/${id}`, movie)
+        .then(res => {
+            console.log(res.data)
+            props.setMovie(res.data);
+            props.history.push(`/movies/${id}`)
+        })
+        .catch(err => console.log(err))
+    }
 
     return (
         <div className='updateForm'>
@@ -70,7 +78,7 @@ const UpdateMovie = props => {
                  type='textarea'
                  name='stars'
                  placeholder='Stars'
-                 onChange={changeHandler}
+                 onChange={starsChangeHandler}
                  value={movie.stars}
                 />
                 <button className='updateBtn'>Update Movie</button>
