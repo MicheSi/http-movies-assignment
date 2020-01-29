@@ -29,13 +29,6 @@ const UpdateMovie = props => {
             value = parseInt(value, 10);
         }
 
-        // if (e.target.name === 'stars') {
-        //     setMovie({
-        //         ...movie,
-        //         [e.target.name]: value.split(",")
-        //     })
-        // }
-    
         setMovie({
             ...movie,
             [e.target.name]: value
