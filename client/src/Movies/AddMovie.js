@@ -1,27 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const initialMovie = {
+    id: Date.now(),
     title: '',
     director: '',
     metascore: '',
     stars: []
 }
 
-const UpdateMovie = props => {
+const AddMovie = props => {
     const [movie, setMovie] = useState(initialMovie);
-    const {id} = useParams();
-
-    useEffect(() => {
-        console.log(props.movies)
-        const movieToUpdate = props.movies.find(movie => `${movie.id}` === id);
-        console.log(movieToUpdate);
-
-        if (movieToUpdate) {
-            setMovie(movieToUpdate);
-        }
-    }, [props.movies, id])
     
     const changeHandler = e => {
         let value = e.target.value;
@@ -36,25 +25,24 @@ const UpdateMovie = props => {
         setMovie({
             ...movie,
             [e.target.name]: value
-
         });
     }
     
     const handleSubmit = e => {
         e.preventDefault();
         axios
-        .put(`http://localhost:5000/api/movies/${id}`, movie)
+        .post(`http://localhost:5000/api/movies`, movie)
         .then(res => {
             console.log(res.data)
             props.setMovie(res.data);
-            props.history.push(`/movies/${id}`)
+            props.history.push('/')
         })
         .catch(err => console.log(err))
     }
 
     return (
         <div className='updateForm'>
-            <h2>Update Movie</h2>
+            <h2>Add Movie</h2>
             <form onSubmit={handleSubmit}>
                 <input
                  type='text'
@@ -84,10 +72,10 @@ const UpdateMovie = props => {
                  onChange={changeHandler}
                  value={movie.stars}
                 />
-                <button className='updateBtn'>Update Movie</button>
+                <button className='updateBtn'>Add Movie</button>
             </form>
         </div>
     )
 }
 
-export default UpdateMovie;
+export default AddMovie;
