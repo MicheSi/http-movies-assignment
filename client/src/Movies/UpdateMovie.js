@@ -31,7 +31,7 @@ const UpdateMovie = props => {
 
         setMovie({
             ...movie,
-            [e.target.name]: value
+            [e.target.name]: value.split(",")
         });
     }
     
@@ -72,8 +72,8 @@ const UpdateMovie = props => {
                  onChange={changeHandler}
                  value={movie.metascore}
                 />
-                <input
-                 type='textarea'
+                <textarea
+                 type='text'
                  name='stars'
                  placeholder='Stars'
                  onChange={changeHandler}
